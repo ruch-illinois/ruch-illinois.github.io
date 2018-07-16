@@ -1,7 +1,7 @@
 function scatterPlot() {
 
-    var width = 500,
-        height = 500;
+    var width = 1300,
+        height = 1300;
 
     function chart(selection) {
 
@@ -58,13 +58,13 @@ function scatterPlot() {
             .attr("y", 6)
             .attr("dy", ".71em")
             .style("text-anchor", "end")
-            .text("Median Earned Income After 10 years")
+            .text("Median Earned Income After 10 years");
 
         svg.selectAll(".dot")
             .data(data)
             .enter().append("circle")
             .attr("class", "dot")
-            .attr("r", 3.5)
+            .attr("r", 10)
             .attr("cx", function(d) { return x(d.AVG_NET_PRICE); })
             .attr("cy", function(d) { return y(d.MD_EARN_WNE_P10); })
             .style("fill", function(d) { return color(d.SCHOOL_TYPE); });

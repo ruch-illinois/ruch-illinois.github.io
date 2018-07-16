@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+    <h2>The Economics of California Higher Education</h2>
+    <p>A deeper look into the student journey into the California University financial landscape</p>
+    <ul class="pagination">
+        <li><a href="index.html">Median Income</a></li>
+        <li><a href="scatter_plot.html">Average Net Spend</a></li>
+        <li><a href="debt_after_college_bar_plot.html">College Debt</a></li>
+        <li><a href="federal_loan_bar_plot.html">Federal Loan</a></li>
+        <li><a href="#">About Visualization</a></li>
+    </ul>
+</div>
+<style>
+
+    body {
+        font: 10px sans-serif;
+    }
+
+    .axis path,
+    .axis line {
+        fill: none;
+        stroke: #000;
+        shape-rendering: crispEdges;
+    }
+
+    .dot {
+        stroke: #000;
+    }
+
+</style>
+<body>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script>
+
+    var margin = {top: 20, right: 20, bottom: 50, left: 70},
+        width = 960 - margin.left - margin.right,
+        height = 500 - margin.top - margin.bottom;
+
+    var tooltip = d3.select("body").append("div")
+        .style("position", "absolute")
+        .style("visibility", "hidden")
+        .style("color", "white")
+        .style("padding", "8px")
+        .style("background-color", "#626D71")
+        .style("border-radius", "6px")
+        .style("text-align", "center")
+        .style("font-family", "monospace")
+        .style("width", "400px")
+        .text("");
+
+    var x = d3.scaleLinear()
+        .range([0, width]);
+
+    var y = d3.scaleLinear()
+        .range([height, 0]);
+
+    var color = d3.scaleOrdinal(d3.schemeCategory10);
+
+    var xAxis = d3.axisBottom(x);
+
+    var yAxis = d3.axisLeft(y);
+
+    var svg = d3.select("body").append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    d3.csv("Most-Recent-Cohorts-Scorecard-Elements.csv", function(error, data) {
+        if (error) throw error;
+
+        data.forEach(function(d) {
+            d.MD_EARN_WNE_P10 = +d.MD_EARN_WNE_P10;
+            d.AVG_NET_PRICE = +d.AVG_NET_PRICE;
+        });
+
+        x.domain(d3.extent(data, function(d) { return d.AVG_NET_PRICE; })).nice();
+        y.domain(d3.extent(data, function(d) { return d.MD_EARN_WNE_P10; })).nice();
+
+
+        svg.append("g")
+            .attr("class", "y axis")
+            .call(yAxis)
+            .append("text")
+            .attr("class", "label")
+            .attr("transform", "rotate(-90)")
+            .attr("y", 6)
+            .attr("dy", ".71em")
+            .style("text-anchor", "end")
+            .text("Median Earned Income");
+
+        svg.selectAll(".dot")
+            .data(data)
+            .enter().append("circle")
+            .attr("class", "dot")
+            .attr("r", 7)
+            .attr("cx", function(d) { return x(d.AVG_NET_PRICE); })
+            .attr("cy", function(d) { return y(d.MD_EARN_WNE_P10); })
+            .on("mouseover", function(d) {
+                tooltip.html(d.INSTNM + "<br><p>Median Income: " + d.MD_EARN_WNE_P10 + "<br>Average Net Spend: " + d.AVG_NET_PRICE);
+                return tooltip.style("visibility", "visible");
+            })
+            .on("mousemove", function() {
+                return tooltip.style("top", (d3.event.pageY - 10) + "px").style("left", (d3.event.pageX + 10) + "px");
+            })
+            .on("mouseout", function() {
+                return tooltip.style("visibility", "hidden")})
+            .style("fill", function(d) { return color(d.SCHOOL_TYPE); });
+
+        var legend = svg.selectAll(".legend")
+            .data(color.domain())
+            .enter().append("g")
+            .attr("class", "legend")
+            .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+
+        legend.append("rect")
+            .attr("x", width - 18)
+            .attr("width", 18)
+            .attr("height", 18)
+            .style("fill", color);
+
+        legend.append("text")
+            .attr("x", width - 24)
+            .attr("y", 9)
+            .attr("dy", ".35em")
+            .style("text-anchor", "end")
+            .text(function(d) { return d; });
+        // Add the x Axis
+        svg.append("g")
+            .attr("transform", "translate(0," + height + ")")
+            .call(d3.axisBottom(x));
+
+        // text label for the x axis
+        svg.append("text")
+            .attr("transform",
+                "translate(" + (width/2) + " ," +
+                (height + margin.top + 20) + ")")
+            .style("text-anchor", "middle")
+            .text("Average Net Spend");
+
+        // Add the y Axis
+        svg.append("g")
+            .call(d3.axisLeft(y));
+
+        // text label for the y axis
+        svg.append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("y", 0 - margin.left)
+            .attr("x",0 - (height / 2))
+            .attr("dy", "1em")
+            .style("text-anchor", "middle")
+            .text("Median Earned Income");
+    });
+
+</script>

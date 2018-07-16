@@ -1,8 +1,8 @@
 function bubbleChart() {
-    var width = 960,
-        height = 960,
+    var width = 1000,
+        height = 1000,
         maxRadius = 6,
-        columnForRadius = "MD_EARN_WNE_P6";
+        columnForRadius = "MD_EARN_WNE_P10";
 
     function chart(selection) {
         var data = selection.datum();
@@ -25,7 +25,7 @@ function bubbleChart() {
 
 
         var simulation = d3.forceSimulation(data)
-            .force("charge", d3.forceManyBody().strength([-50]))
+            .force("charge", d3.forceManyBody().strength([-40]))
             .force("x", d3.forceX())
             .force("y", d3.forceY())
             .on("tick", ticked);
@@ -53,10 +53,11 @@ function bubbleChart() {
             .attr('r', function(d) {
                 return scaleRadius(d[columnForRadius])
             })
+            .text(function(d) {return d.INSTNM})
             .style("fill", "blue")
             .attr('transform', 'translate(' + [width / 2, height / 2] + ')')
             .on("mouseover", function(d) {
-                tooltip.html("<br>" + d.title + "<br>" + d[columnForRadius] + " hearts");
+                tooltip.html("<br>" + d.INSTNM + "<br>Median Income: $" + d[columnForRadius]);
                 return tooltip.style("visibility", "visible");
             })
             .on("mousemove", function() {
