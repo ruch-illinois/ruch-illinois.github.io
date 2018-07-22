@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <head>
-    <title>Bootstrap Example</title>
+    <title>The Economics of California Higher Education</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -9,22 +9,26 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">CS 498 Final Project</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li><a href="index.html">Median Income</a></li>
+            <li><a href="scatter_plot.html">Average Net Spend</a></li>
+            <li class="active"><a href="debt_after_college_bar_plot.html">College Debt</a></li>
+            <li><a href="#">About Visualization</a></li>
+        </ul>
+    </div>
+</nav>
 <div class="container">
     <h1>The Economics of California Higher Education</h1>
     <h3>A deeper look into the student journey into the California University financial landscape</h3>
-    <ul class="pagination">
-        <li><a href="index.html">Median Income</a></li>
-        <li><a href="scatter_plot.html">Average Net Spend</a></li>
-        <li><a href="debt_after_college_bar_plot.html">College Debt</a></li>
-        <li><a href="federal_loan_bar_plot.html">Federal Loan</a></li>
-        <li><a href="#">About Visualization</a></li>
-    </ul>
 </div>
 <style>
     body {
-        margin: 15px;
-        font: 20px sans-serif;
+        font: 10px sans-serif;
         background-color: #F1F3F3
     }
     .bar {
@@ -120,16 +124,19 @@
 <div class="row">
     <div id="slider" align="left"></div>
     <div class="row">
-    <div class="column">
+    <div id="avg_debt" class="column">
         <svg width="800" height="900"></svg>
     </div>
-    <div id="fed_loan">jklajdfls</div>
+    <div id="fed_loan" class="column">
+        <svg width="800" height="900"></svg>
+    </div>
     </div>
 </div>
 
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script>
-    var svg = d3.select("svg"),
+    var svg = d3.select("#avg_debt").select("svg"),
+        svg2 = d3.select("#fed_loan").select("svg")
         margin = {top: 0, right: 20, bottom: 40, left: 300},
         width = +svg.attr("width") - margin.left - margin.right,
         height = +svg.attr("height") - margin.top - margin.bottom;
@@ -158,7 +165,7 @@
         var svgSlider = d3.select("#slider")
             .append("svg")
             .attr("width", width + margin.left + margin.right)
-            .attr("height", 100);
+            .attr("height", 150);
 
         var x = d3.scaleLinear()
             .domain([0, d3.max(data, function (d) {
@@ -269,13 +276,12 @@
     };
 
     function drawPlot2(data){
-        svg2 = d3.select("#fed_loan").append("svg")
 
         svg2.selectAll("*").remove()
 
         data.sort(function(a, b) { return a.PCTFLOAN - b.PCTFLOAN; });
 
-        x.domain([0, d3.max(data, function(d) { return d.PCTFLOAN; })]);
+        x.domain([0, d3.max(data, function(d) { return +d.PCTFLOAN * 100; })]);
         y.domain(data.map(function(d) { return d.INSTNM; })).padding(0.1);
 
 
@@ -288,11 +294,11 @@
             .attr("transform", "translate(0," + height + ")")
             .call(d3.axisBottom(x).ticks(5).tickFormat(function(d) { return parseInt(d); }).tickSizeInner([-height]));
 
-        svg.append("text")
+        svg2.append("text")
             .attr("x", (width + margin.left + margin.right) / 2 )
             .attr("y",  height + margin.top + 30 )
             .style("text-anchor", "middle")
-            .text("Average Debt");
+            .text("% Using Federal Loan");
 
         g.append("g")
             .attr("class", "y axis")
@@ -305,13 +311,13 @@
             .attr("x", 0)
             .attr("height", y.bandwidth())
             .attr("y", function(d) { return y(d.INSTNM); })
-            .attr("width", function(d) { return x(d.PCTFLOAN); })
+            .attr("width", function(d) { return x(+d.PCTFLOAN * 100); })
             .on("mousemove", function(d){
                 tooltip
                     .style("left", d3.event.pageX - 50 + "px")
                     .style("top", d3.event.pageY - 70 + "px")
                     .style("display", "inline-block")
-                    .html((d.INSTNM) + "<br>" + "Average Debt: $" + (d.PCTFLOAN) + "<br>" + "Average Net Price: $" + d.AVG_NET_PRICE);
+                    .html((d.INSTNM) + "<br>" + "% Using Federal Loan: " + (+d.PCTFLOAN * 100) + "%<br>" + "Average Net Price: $" + d.AVG_NET_PRICE);
             })
             .on("mouseout", function(d){ tooltip.style("display", "none");});
 
@@ -333,6 +339,7 @@
         });
 
         drawPlot(newData);
+        drawPlot2(newData);
     }
 </script>
 </body>

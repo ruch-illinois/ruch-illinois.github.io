@@ -1,6 +1,6 @@
 function bubbleChart() {
-    var width = 1000,
-        height = 1000,
+    var width = 600,
+        height = 800,
         maxRadius = 6,
         columnForRadius = "MD_EARN_WNE_P10";
 
@@ -25,7 +25,7 @@ function bubbleChart() {
 
 
         var simulation = d3.forceSimulation(data)
-            .force("charge", d3.forceManyBody().strength([-40]))
+            .force("charge", d3.forceManyBody().strength([-20]))
             .force("x", d3.forceX())
             .force("y", d3.forceY())
             .on("tick", ticked);
@@ -54,7 +54,20 @@ function bubbleChart() {
                 return scaleRadius(d[columnForRadius])
             })
             .text(function(d) {return d.INSTNM})
-            .style("fill", "blue")
+            .style("fill", function(d) {
+                if(d.AVG_NET_PRICE < 5000)
+                {
+                    return "blue"
+                }
+                else if (d.AVG_NET_PRICE >= 5000 && d.AVG_NET_PRICE  < 10000){
+                    return "green"
+                }
+                else if (d.AVG_NET_PRICE >= 10000 && d.AVG_NET_PRICE  < 15000){
+                    return "purple"
+                }
+                else{ return "red"}
+                }
+            )
             .attr('transform', 'translate(' + [width / 2, height / 2] + ')')
             .on("mouseover", function(d) {
                 tooltip.html("<br>" + d.INSTNM + "<br>Median Income: $" + d[columnForRadius]);

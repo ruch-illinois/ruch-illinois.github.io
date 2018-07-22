@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <head>
-    <title>Bootstrap Example</title>
+    <title>The Economics of California Higher Education</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -9,21 +9,31 @@
 </head>
 <body>
 
+
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">CS 498 Final Project</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li class="active"><a href="index.html">Median Income</a></li>
+            <li><a href="scatter_plot.html">Average Net Spend</a></li>
+            <li><a href="debt_after_college_bar_plot.html">College Debt</a></li>
+            <li><a href="#">About Visualization</a></li>
+        </ul>
+    </div>
+</nav>
+
 <div class="container">
     <h2>The Economics of California Higher Education</h2>
     <p>A deeper look into the student journey into the California University financial landscape</p>
-    <ul class="pagination">
-        <li><a href="index.html">Median Income</a></li>
-        <li><a href="scatter_plot.html">Average Net Spend</a></li>
-        <li><a href="debt_after_college_bar_plot.html">College Debt</a></li>
-        <li><a href="federal_loan_bar_plot.html">Federal Loan</a></li>
-        <li><a href="#">About Visualization</a></li>
-    </ul>
+
 </div>
 <style>
 
     body {
         font: 10px sans-serif;
+        background-color: #F1F3F3
     }
 
     .axis path,
@@ -38,11 +48,32 @@
     }
 
 </style>
-<div class="chart-example" id="chart"><svg></svg></div>
+
+<body>
+
+
+        <h3><u>Median Income After College</u></h3>
+        <p>This takes a look at the median income of students earned post-college in the California University System.  As seen by the many
+        private and public colleges, there is a wide range of colleges, yet as seen in the visual; a higher education can yield a broad
+        range of potential incomes.
+
+
+        <p>.</p>
+
+        <h3><u>Note about Visualization</u></h3>
+        <p>This visualization is a static visualization, and is intended to pique the viewers interest behind the student's financial journey to higher education.
+        The labels are left off, to allow the user to drop any pre-concieved notions about the cost of colleges, and push the user to explore
+        the data in more detail, in subsequent scenes</p>
+
+
+        <div class="chart-example" id="chart"><svg></svg></div>
+
+
+
 
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script src="income_visualization_bubble_chart.js"></script>
-<script src="income_net_spend_scatter_plot.js"></script>
+
 <script>
 
     d3.csv('Most-Recent-Cohorts-Scorecard-Elements.csv', function(error, data) {
@@ -56,7 +87,7 @@
             d.MD_EARN_WNE_P10 = +d.MD_EARN_WNE_P10;});
         // selection.datum() returns the bound datum for the first element in the selection and
         //  doesn't join the specified array of data with the selected elements
-        var chart = bubbleChart().width(1500).height(1500);
+        var chart = bubbleChart().width(600).height(700);
         d3.select('#chart').datum(data).call(chart);
     });
 

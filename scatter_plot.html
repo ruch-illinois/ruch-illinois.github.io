@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <head>
-    <title>Bootstrap Example</title>
+    <title>The Economics of California Higher Education</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -9,22 +9,28 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">CS 498 Final Project</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li><a href="index.html">Median Income</a></li>
+            <li class="active"><a href="scatter_plot.html">Average Net Spend</a></li>
+            <li><a href="debt_after_college_bar_plot.html">College Debt</a></li>
+            <li><a href="#">About Visualization</a></li>
+        </ul>
+    </div>
+</nav>
 <div class="container">
-    <h2>The Economics of California Higher Education</h2>
-    <p>A deeper look into the student journey into the California University financial landscape</p>
-    <ul class="pagination">
-        <li><a href="index.html">Median Income</a></li>
-        <li><a href="scatter_plot.html">Average Net Spend</a></li>
-        <li><a href="debt_after_college_bar_plot.html">College Debt</a></li>
-        <li><a href="federal_loan_bar_plot.html">Federal Loan</a></li>
-        <li><a href="#">About Visualization</a></li>
-    </ul>
+    <h1>The Economics of California Higher Education</h1>
+    <h3>A deeper look into the student journey into the California University financial landscape</h3>
 </div>
 <style>
 
     body {
         font: 10px sans-serif;
+        background-color: #F1F3F3
     }
 
     .axis path,
@@ -37,17 +43,84 @@
     .dot {
         stroke: #000;
     }
+    .track,
+    .track-inset,
+    .track-overlay {
+        stroke-linecap: round;
+    }
+
+    .track {
+        stroke: #000;
+        stroke-opacity: 0.3;
+        stroke-width: 10px;
+    }
+
+    .track-inset {
+        stroke: #dcdcdc;
+        stroke-width: 8px;
+    }
+
+    .track-overlay {
+        pointer-events: stroke;
+        stroke-width: 50px;
+        stroke: transparent;
+        cursor: crosshair;
+    }
+
+    .handle {
+        fill: #fff;
+        stroke: #000;
+        stroke-opacity: 0.5;
+        stroke-width: 1.25px;
+    }
+    /* Create two equal columns that floats next to each other */
+    .column {
+        float: left;
+        width: 50%;
+        padding: 10px;
+        height: 300px; /* Should be removed. Only for demonstration */
+    }
+
+    /* Clear floats after the columns */
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
 
 </style>
 <body>
+<div>
+    <h3><u>Average Net Spend</u></h3>
+    <p>This takes a look at the median income of students earned post-college as it relates to Average Net Spend. As seen
+        in this scatter plot, the higher the average net spend is, it doesn't necesarily indicate that median income will
+        also follow the same positive trend.  </p>
+
+    <p>.</p>
+
+    <h3><u>Note about Visualization</u></h3>
+    <p>This visualization has one slider that controls the median income amount.  The goal was to show the school's average net cost, as
+        the user in this scene slides median income filter.  The scatter plot plot points have further details when you
+        hover over to get the detailed information such as the exact median income and average net spend for that specific school.</p>
+
+</div>
+<div class="row">
+    <div id="slider" align="left"></div>
+    <div class="row">
+        <div id="scatter_plot" class="column">
+            <svg width="800" height="900"></svg>
+        </div>
+    </div>
+</div>
+
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script>
 
     var margin = {top: 20, right: 20, bottom: 50, left: 70},
-        width = 960 - margin.left - margin.right,
-        height = 500 - margin.top - margin.bottom;
+        width = 800 - margin.left - margin.right,
+        height = 600 - margin.top - margin.bottom;
 
-    var tooltip = d3.select("body").append("div")
+    var tooltip = d3.select("#scatter_plot").append("div")
         .style("position", "absolute")
         .style("visibility", "hidden")
         .style("color", "white")
@@ -71,7 +144,7 @@
 
     var yAxis = d3.axisLeft(y);
 
-    var svg = d3.select("body").append("svg")
+    var svg = d3.select("#scatter_plot").select("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
         .append("g")
@@ -80,13 +153,26 @@
     d3.csv("Most-Recent-Cohorts-Scorecard-Elements.csv", function(error, data) {
         if (error) throw error;
 
-        data.forEach(function(d) {
+        data.forEach(function (d) {
             d.MD_EARN_WNE_P10 = +d.MD_EARN_WNE_P10;
             d.AVG_NET_PRICE = +d.AVG_NET_PRICE;
-        });
+        })
 
-        x.domain(d3.extent(data, function(d) { return d.AVG_NET_PRICE; })).nice();
-        y.domain(d3.extent(data, function(d) { return d.MD_EARN_WNE_P10; })).nice();
+        dataset = data;
+
+        drawPlot(dataset);
+        drawSlider(dataset);
+    });
+
+    function drawPlot(data){
+        svg.selectAll("*").remove();
+
+        /*x.domain(d3.extent(data, function(d) { return d.AVG_NET_PRICE; })).nice();
+        y.domain(d3.extent(data, function(d) { return d.MD_EARN_WNE_P10; })).nice();*/
+
+        x.domain([0, d3.max(data, function(d) { return d.AVG_NET_PRICE; })]);
+        y.domain([0, d3.max(data, function(d) { return d.MD_EARN_WNE_P10; })]);
+
 
 
         svg.append("g")
@@ -116,7 +202,9 @@
             })
             .on("mouseout", function() {
                 return tooltip.style("visibility", "hidden")})
-            .style("fill", function(d) { return color(d.SCHOOL_TYPE); });
+            .style("fill", function(d) { return color(d.SCHOOL_TYPE); })
+            .transition()
+            .duration(400);
 
         var legend = svg.selectAll(".legend")
             .data(color.domain())
@@ -161,6 +249,83 @@
             .attr("dy", "1em")
             .style("text-anchor", "middle")
             .text("Median Earned Income");
-    });
+    }
 
+    function update(h, handle, label) {
+        // update position and text of label according to slider scale
+        handle.attr("cx", x(h));
+        label
+            .attr("x", x(h))
+            .text(h);
+
+        // filter data set and redraw plot
+        var newData = dataset.filter(function(d) {
+            return d.MD_EARN_WNE_P10 > h;
+        });
+
+        drawPlot(newData);
+    }
+    function drawSlider(data)
+    {
+        var svgSlider = d3.select("#slider")
+            .append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", 150);
+
+        var x = d3.scaleLinear()
+            .domain([d3.min(data, function(d) { return +d.MD_EARN_WNE_P10;}),
+                d3.max(data, function (d) { return +d.MD_EARN_WNE_P10;})
+            ])
+            .range([0, width + margin.left + margin.right])
+            .clamp(true);
+
+        var slider = svgSlider.append("g")
+            .attr("class", "slider")
+            .attr("transform", "translate(" + margin.left + "," + 150 / 2 + ")");
+
+        var handle = slider.insert("circle", ".track-overlay")
+            .attr("class", "handle")
+            .attr("r", 9);
+
+        var label = slider.append("text")
+            .attr("class", "label")
+            .attr("text-anchor", "middle")
+            .attr("transform", "translate(0," + (-25) + ")")
+
+        slider.append("line")
+            .attr("class", "track")
+            .attr("x1", x.range()[0])
+            .attr("x2", x.range()[1])
+            .select(function () {
+                return this.parentNode.appendChild(this.cloneNode(true));
+            })
+            .attr("class", "track-inset")
+            .select(function () {
+                return this.parentNode.appendChild(this.cloneNode(true));
+            })
+            .attr("class", "track-overlay")
+            .call(d3.drag()
+                .on("start.interrupt", function () {
+                    slider.interrupt();
+                })
+                .on("start drag", function () {
+                    update(x.invert(d3.event.x),handle, label);
+                }));
+
+        slider.insert("g", ".track-overlay")
+            .attr("class", "ticks")
+            .attr("transform", "translate(0," + 18 + ")")
+            .selectAll("text")
+            .data(x.ticks(10))
+            .enter()
+            .append("text")
+            .attr("x", x)
+            .attr("y", 10)
+            .attr("text-anchor", "middle")
+            .text(function (d) {
+                return parseFloat(d);
+            });
+
+
+    }
 </script>
