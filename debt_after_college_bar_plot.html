@@ -11,8 +11,8 @@
 <body>
 
 <div class="container">
-    <<h2>The Economics of California Higher Education</h2>
-    <p>A deeper look into the student journey into the California University financial landscape</p>
+    <h1>The Economics of California Higher Education</h1>
+    <h3>A deeper look into the student journey into the California University financial landscape</h3>
     <ul class="pagination">
         <li><a href="index.html">Median Income</a></li>
         <li><a href="scatter_plot.html">Average Net Spend</a></li>
@@ -24,7 +24,7 @@
 <style>
     body {
         margin: 15px;
-        font: 10px sans-serif;
+        font: 20px sans-serif;
         background-color: #F1F3F3
     }
     .bar {
@@ -84,15 +84,53 @@
         stroke-opacity: 0.5;
         stroke-width: 1.25px;
     }
-</style>
-<div id="slider"></div>
-<svg width="960" height="1000"></svg>
+    /* Create two equal columns that floats next to each other */
+    .column {
+        float: left;
+        width: 50%;
+        padding: 10px;
+        height: 300px; /* Should be removed. Only for demonstration */
+    }
 
+    /* Clear floats after the columns */
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+</style>
+
+
+<div>
+    <h3><u>Average Debt After College</u></h3>
+    <p>This take a look at the Average Debt students incur post-college as it relates to Average Net Spend. As expected
+        the high expense schools, will generally yield students with higher debt.  This can be attributed to multiple factors.
+        One clear cut reason is that spending more money requires more loan debt.  The second reason is that graduates will tend
+        to tabulate a debt based on the income that they earn post graduation.</p>
+
+    <p>As seen in the visualization, the higher debt students tend to have a lower median income versus students that yield
+        higher incomes after graduation.</p>
+
+    <h3><u>Note about Visualization</u></h3>
+    <p>This visualization has one slider that controls both bar graphs.  The goal was to illustrate the comparisons of schools
+    across two financial areas such as debt and federal loans needed by students.  The bar graphs have further details when you
+    hover over the bars, to get the detailed information.</p>
+
+</div>
+<div class="row">
+    <div id="slider" align="left"></div>
+    <div class="row">
+    <div class="column">
+        <svg width="800" height="900"></svg>
+    </div>
+    <div id="fed_loan">jklajdfls</div>
+    </div>
+</div>
 
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script>
     var svg = d3.select("svg"),
-        margin = {top: 20, right: 20, bottom: 40, left: 300},
+        margin = {top: 0, right: 20, bottom: 40, left: 300},
         width = +svg.attr("width") - margin.left - margin.right,
         height = +svg.attr("height") - margin.top - margin.bottom;
 
@@ -112,6 +150,7 @@
         dataset = data;
         drawPlot(dataset);
         drawSlider(dataset);
+        drawPlot2(dataset);
     });
     //Slider
     function drawSlider(data)
@@ -119,7 +158,7 @@
         var svgSlider = d3.select("#slider")
             .append("svg")
             .attr("width", width + margin.left + margin.right)
-            .attr("height", +svg.attr("height"));
+            .attr("height", 100);
 
         var x = d3.scaleLinear()
             .domain([0, d3.max(data, function (d) {
@@ -130,7 +169,7 @@
 
         var slider = svgSlider.append("g")
             .attr("class", "slider")
-            .attr("transform", "translate(" + margin.left + "," + height / 2 + ")");
+            .attr("transform", "translate(" + margin.left + "," + 100 / 2 + ")");
 
         var handle = slider.insert("circle", ".track-overlay")
             .attr("class", "handle")
@@ -210,7 +249,6 @@
         bars = g.selectAll(".bar")
             .data(data)
             .enter().append("rect")
-                .attr("class","location")
             .attr("class", "bar")
             .attr("x", 0)
             .attr("height", y.bandwidth())
@@ -221,7 +259,59 @@
                     .style("left", d3.event.pageX - 50 + "px")
                     .style("top", d3.event.pageY - 70 + "px")
                     .style("display", "inline-block")
-                    .html((d.INSTNM) + "<br>" + "$" + (d.GRAD_DEBT_MDN_SUPP));
+                    .html((d.INSTNM) + "<br>" + "Average Debt: $" + (d.GRAD_DEBT_MDN_SUPP) + "<br>" + "Average Net Price: $" + d.AVG_NET_PRICE);
+            })
+            .on("mouseout", function(d){ tooltip.style("display", "none");});
+
+
+        bars.exit().remove();
+
+    };
+
+    function drawPlot2(data){
+        svg2 = d3.select("#fed_loan").append("svg")
+
+        svg2.selectAll("*").remove()
+
+        data.sort(function(a, b) { return a.PCTFLOAN - b.PCTFLOAN; });
+
+        x.domain([0, d3.max(data, function(d) { return d.PCTFLOAN; })]);
+        y.domain(data.map(function(d) { return d.INSTNM; })).padding(0.1);
+
+
+        var g = svg2.append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+        g.selectAll(".bar").remove()
+        g.append("g")
+            .attr("class", "x axis")
+            .attr("transform", "translate(0," + height + ")")
+            .call(d3.axisBottom(x).ticks(5).tickFormat(function(d) { return parseInt(d); }).tickSizeInner([-height]));
+
+        svg.append("text")
+            .attr("x", (width + margin.left + margin.right) / 2 )
+            .attr("y",  height + margin.top + 30 )
+            .style("text-anchor", "middle")
+            .text("Average Debt");
+
+        g.append("g")
+            .attr("class", "y axis")
+            .call(d3.axisLeft(y));
+
+        bars = g.selectAll(".bar")
+            .data(data)
+            .enter().append("rect")
+            .attr("class", "bar")
+            .attr("x", 0)
+            .attr("height", y.bandwidth())
+            .attr("y", function(d) { return y(d.INSTNM); })
+            .attr("width", function(d) { return x(d.PCTFLOAN); })
+            .on("mousemove", function(d){
+                tooltip
+                    .style("left", d3.event.pageX - 50 + "px")
+                    .style("top", d3.event.pageY - 70 + "px")
+                    .style("display", "inline-block")
+                    .html((d.INSTNM) + "<br>" + "Average Debt: $" + (d.PCTFLOAN) + "<br>" + "Average Net Price: $" + d.AVG_NET_PRICE);
             })
             .on("mouseout", function(d){ tooltip.style("display", "none");});
 
@@ -245,3 +335,5 @@
         drawPlot(newData);
     }
 </script>
+</body>
+
