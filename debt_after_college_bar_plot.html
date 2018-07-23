@@ -12,10 +12,10 @@
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a class="navbar-brand" href="#">CS 498 Final Project</a>
+            <a class="navbar-brand" href="index.html">CS 498 Final Project</a>
         </div>
         <ul class="nav navbar-nav">
-            <li><a href="index.html">Median Income</a></li>
+            <li><a href="bubblechart.html">Median Income</a></li>
             <li><a href="scatter_plot.html">Average Net Spend</a></li>
             <li class="active"><a href="debt_after_college_bar_plot.html">College Debt</a></li>
             <li><a href="#">About Visualization</a></li>
@@ -147,6 +147,9 @@
     var x = d3.scaleLinear().range([0, width]);
     var y = d3.scaleBand().range([height, 0]);
 
+    var x_slider = d3.scaleLinear()
+        .range([0, width])
+        .clamp(true);
 
     d3.csv("Most-Recent-Cohorts-Scorecard-Elements.csv", function(error, data) {
         if (error) throw error;
@@ -167,12 +170,9 @@
             .attr("width", width + margin.left + margin.right)
             .attr("height", 150);
 
-        var x = d3.scaleLinear()
-            .domain([0, d3.max(data, function (d) {
+        x_slider.domain([0, d3.max(data, function (d) {
                 return +d.AVG_NET_PRICE;
-            })])
-            .range([0, width])
-            .clamp(true);
+            })]);
 
         var slider = svgSlider.append("g")
             .attr("class", "slider")
@@ -189,8 +189,8 @@
 
         slider.append("line")
             .attr("class", "track")
-            .attr("x1", x.range()[0])
-            .attr("x2", x.range()[1])
+            .attr("x1", x_slider.range()[0])
+            .attr("x2", x_slider.range()[1])
             .select(function () {
                 return this.parentNode.appendChild(this.cloneNode(true));
             })
@@ -204,17 +204,17 @@
                     slider.interrupt();
                 })
                 .on("start drag", function () {
-                    update(x.invert(d3.event.x),handle, label);
+                    update(x_slider.invert(d3.event.x),handle, label);
                 }));
 
         slider.insert("g", ".track-overlay")
             .attr("class", "ticks")
             .attr("transform", "translate(0," + 18 + ")")
             .selectAll("text")
-            .data(x.ticks(10))
+            .data(x_slider.ticks(10))
             .enter()
             .append("text")
-            .attr("x", x)
+            .attr("x", x_slider)
             .attr("y", 10)
             .attr("text-anchor", "middle")
             .text(function (d) {
@@ -328,9 +328,9 @@
 
     function update(h, handle, label) {
         // update position and text of label according to slider scale
-        handle.attr("cx", x(h));
+        handle.attr("cx", x_slider(h));
         label
-            .attr("x", x(h))
+            .attr("x", x_slider(h))
             .text(h);
 
         // filter data set and redraw plot
