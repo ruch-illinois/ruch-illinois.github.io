@@ -27,7 +27,8 @@
 <style>
 
     body {
-        font: 10px sans-serif;
+        font: 15px sans-serif;
+        margin: 10px 20px;
         background-color: #F1F3F3
     }
 
@@ -67,13 +68,21 @@
         border-radius: 50%;
     }
 
-    #example1 {
-        border: 2px solid black;
-        padding: 25px;
-        background: url("190452-480x320-Cap-diploma-and-money.jpg");
-        background-repeat: no-repeat;
-        background-size: cover;
+    /* Create two equal columns that floats next to each other */
+    .column {
+        float: left;
+        width: 50%;
+        padding: 10px;
+        height: 300px; /* Should be removed. Only for demonstration */
     }
+
+    /* Clear floats after the columns */
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+
 
 </style>
 
@@ -84,18 +93,62 @@
     <h1>The Economics of California Higher Education</h1>
     <h3>A closer look into the student journey into the California University financial landscape</h3>
 </div>
+
 <div class="row">
-    <div class="column"></div>
     <div class="column">
-        <h3><u>Median Income After College</u></h3>
-        <p>This takes a look at the median income of students earned post-college in the California University System.  As seen by the many
-            private and public colleges, there is a wide range of colleges, yet as seen in the visual; a higher education can yield a broad
-            range of potential incomes.
+        <h3><u>Visualization Summary</u></h3>
+        <p>The focus of this visualization is to guide the user through the financial considerations when evaluating a
+        college in California.  In general, a large consideration for most prospective students is the earning potential
+        after graduating college.  In today's society, it is a large investment by the student to embark on a journey through
+        college.  For this reason, I chose to use an interactive slide show to illustrate the financial considerations that
+        potential students must consider when evaluating a college.  It does a comparision of median incomes against other
+        common financial considerations such as the % of students using loans, average net spend per year, and the mean debt of
+        students after graduating college.</p>
+
+        <p>Each slide in the presentation represents a different financial aspect of the cost of college, as it relates
+            to the earned income of graduating students; to allow the user to focus on that particular aspect of cost of college.
+            I've chosen to allow the user to have the freedom to "bounce" between scenes, as to allow the user to easily compare schools
+            for different factors.  No cost aspect is more weighted then the other, as the objective is to allow the user to evaluate schools
+            and draw their own conclusions.
+        </p>
+
+        <p>
+            The scatter plot visualization was the best visualization suited for this message, as it clearly showed the relationships
+            between earned income and the other cost factors when attending different universities.  It allowed the users to easily identify
+            the colleges that have high earning potential, and would incur the smallest amount of potential costs, by showing where colleges
+            clustered in the visualization.
+
+            I enabled tooltips to allow users the ability to get more detailed information about the individual school, and inform the user
+            about this school.  The major intent of this visualization was geared specifically to prospective students who
+            are considering the California University system for their studies, and seeing which school met their financial objectives.
+        </p>
+    </div>
+    <div class="column">
+        <h3><u>Scene: Average Net Costs</u></h3>
+        <p>The focus of this scene was to take the Average Net Costs, and compare this information against the median earned
+        income of studens post-college.  The Average Net Costs represents the calculated data based on calculations by the each
+        University cost calculator, which took into consideration annual college costs such as tuition, room & board, books,
+        transportation, food, and subtracted any potential scholarships and grants to arrived at the annual net costs of
+        attendance.
 
 
-        <h3><u>Note about Visualization</u></h3>
-        <p>This visualization is a static visualization, and is intended to pique the viewers interest behind the student's financial journey to higher education.
-            The labels are left off, to allow the user to drop any pre-concieved notions about the cost of colleges, and push the user to explore
-            the data in more detail, in subsequent scenes</p>
+        <h3><u>Scene: College Debt</u></h3>
+        <p>This scene was meant to capture the mean debt that students accumulated post graduation.  In concert with the other
+        scenes, it allows the user to answer the question, of which college by numbers represents the best value for long
+        term earning potential.</p>
+
+        <h3><u>Scene: Federal Loan</u></h3>
+        <p>This scene was meant to paint a picture of student that leveraged a federal loan to finance their college education.
+        Though the percentage of students using a federal loan doesn't quite convey the gravity of financial burden, it does imply
+        the indication of financial assistance needed to fund an education at the school.  Hence, in considering this along with
+        the median earned income, it shows the likelihood of paying off a federal loan.</p>
+
+        <h3><u>Conclusion</u></h3>
+        As a summarized conclusion to this essay, a large portion of the public university tend to present high value in terms
+        of lower debt, average net costs, and federal against higher median incomes.  In regards to observations, Stanford University
+        represented the best value in terms of the lowest costs considerations against median earned incomes for graduates from there.
+        This is in part due to the reputation of Stanford and it's ability to attract highly qualified academic candidates.
+        The lower costs is likely due to it's availability and opportunity for students to qualify for a broad spectrum of
+        scholarships and grants.
     </div>
 </div>
