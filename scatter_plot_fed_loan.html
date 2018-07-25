@@ -15,10 +15,10 @@
             <a class="navbar-brand" href="index.html">CS 498 Final Project</a>
         </div>
         <ul class="nav navbar-nav">
-            <li><a href="bubblechart.html">Median Income</a></li>
-            <li class="active"><a href="scatter_plot.html">Average Net Spend</a></li>
-            <li><a href="debt_after_college_bar_plot.html">College Debt</a></li>
-            <li><a href="#">About Visualization</a></li>
+            <li><a href="scatter_plot.html">Average Net Spend</a></li>
+            <li class="active"><a href="scatter_plot_fed_loan.html">Federal Loan</a></li>
+            <li><a href="scatter_plot_debt.html">College Debt</a></li>
+            <li><a href="about_visualization.html">About Visualization</a></li>
         </ul>
     </div>
 </nav>
@@ -29,7 +29,8 @@
 <style>
 
     body {
-        font: 10px sans-serif;
+        font: 15px sans-serif;
+        margin: 10px 20px;
         background-color: #F1F3F3
     }
 
@@ -101,14 +102,29 @@
     .round {
         border-radius: 50%;
     }
+    /* Create two equal columns that floats next to each other */
+    .column {
+        float: left;
+        width: 50%;
+        padding: 10px;
+        height: 300px; /* Should be removed. Only for demonstration */
+    }
+
+    /* Clear floats after the columns */
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
 
 </style>
 <body>
 <div align="center">
-    <a href="scatter_plot_debt.html" class="previous">&raquo; Previous Scene</a>
-    <a href="about_visualization.html" class="next">Next Scene&raquo;</a>
+    <a href="scatter_plot.html" class="previous">&raquo; Previous Scene</a>
+    <a href="scatter_plot_debt.html" class="next">Next Scene&raquo;</a>
 </div>
-<div>
+<div class="row"></div>
+<div class="column">
     <h3><u>Average Net Spend</u></h3>
     <p>This takes a look at the median income of students earned post-college as it relates to Average Net Spend. As seen
         in this scatter plot, the higher the average net spend is, it doesn't necesarily indicate that median income will
@@ -122,7 +138,8 @@
         hover over to get the detailed information such as the exact median income and average net spend for that specific school.</p>
 
 </div>
-<div class="row">
+
+<div class="column">
     <div id="slider" align="left"></div>
     <div class="row">
         <div id="scatter_plot" class="column">
@@ -134,9 +151,9 @@
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script>
 
-    var margin = {top: 20, right: 0, bottom: 50, left: 70},
+    var margin = {top: 20, right: 100, bottom: 50, left: 100},
         width = 800 - margin.left - margin.right,
-        height = 900 - margin.top - margin.bottom;
+        height = 800 - margin.top - margin.bottom;
 
     var tooltip = d3.select("#scatter_plot").append("div")
         .style("position", "absolute")
@@ -192,8 +209,8 @@
         /*x.domain(d3.extent(data, function(d) { return d.PCTFLOAN; })).nice();
         y.domain(d3.extent(data, function(d) { return d.MD_EARN_WNE_P10; })).nice();*/
 
-        x.domain([0, d3.max(data, function(d) { return d.PCTFLOAN * 100; })]);
-        y.domain([0, d3.max(data, function(d) { return d.MD_EARN_WNE_P10; })]);
+        x.domain([d3.min(data, function(d) { return d.PCTFLOAN * 100; }), d3.max(data, function(d) { return d.PCTFLOAN * 100; })]);
+        y.domain([d3.min(data, function(d) { return d.MD_EARN_WNE_P10; }), d3.max(data, function(d) { return d.MD_EARN_WNE_P10; })]);
 
 
 
@@ -281,7 +298,7 @@
 
         // filter data set and redraw plot
         var newData = dataset.filter(function(d) {
-            return d.PCTFLOAN *100 > h;
+            return d.MD_EARN_WNE_P10 > h;
         });
 
         drawPlot(newData);
@@ -290,11 +307,11 @@
     {
         var svgSlider = d3.select("#slider")
             .append("svg")
-            .attr("width", width + margin.left)
+            .attr("width", width + margin.left + margin.right)
             .attr("height", 150);
 
-        x_slider.domain([d3.min(data, function (d) { return +d.PCTFLOAN *100;}),
-            d3.max(data, function (d) { return +d.PCTFLOAN *100;})
+        x_slider.domain([d3.min(data, function (d) { return + d.MD_EARN_WNE_P10;}),
+            d3.max(data, function (d) { return +d.MD_EARN_WNE_P10;})
         ]);
 
         var slider = svgSlider.append("g")

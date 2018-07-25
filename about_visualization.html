@@ -16,9 +16,9 @@
             <a class="navbar-brand" href="index.html">CS 498 Final Project</a>
         </div>
         <ul class="nav navbar-nav">
-            <li><a href="bubblechart.html">Median Income</a></li>
             <li><a href="scatter_plot.html">Average Net Spend</a></li>
-            <li><a href="debt_after_college_bar_plot.html">College Debt</a></li>
+            <li><a href="scatter_plot_fed_loan.html">Federal Loan</a></li>
+            <li><a href="scatter_plot_debt.html">College Debt</a></li>
             <li class="active"><a href="about_visualization.html">About Visualization</a></li>
         </ul>
     </div>
@@ -114,7 +114,7 @@
 
         <p>
             The scatter plot visualization was the best visualization suited for this message, as it clearly showed the relationships
-            between earned income and the other cost factors when attending different universities.  It allowed the users to easily identify
+            between median earned income and the other cost factors when attending different universities.  It allowed the users to easily identify
             the colleges that have high earning potential, and would incur the smallest amount of potential costs, by showing where colleges
             clustered in the visualization.
 
@@ -131,7 +131,6 @@
         transportation, food, and subtracted any potential scholarships and grants to arrived at the annual net costs of
         attendance.
 
-
         <h3><u>Scene: College Debt</u></h3>
         <p>This scene was meant to capture the mean debt that students accumulated post graduation.  In concert with the other
         scenes, it allows the user to answer the question, of which college by numbers represents the best value for long
@@ -143,12 +142,20 @@
         the indication of financial assistance needed to fund an education at the school.  Hence, in considering this along with
         the median earned income, it shows the likelihood of paying off a federal loan.</p>
 
+        <h3><u>Parameters, Triggers, and Events</u></h3>
+        <p>The parameter used across all scenes is the median income across the California University System. I leveraged a sliding bar
+        to filter based on median income.  This sliding bar acted as a filter to trigger an update on the visualization to show
+        the filtered view.  For each time the sliding bar filter is adjusted, it will update the visualization.  To enable users,
+        to get a more detailed view of the scatter plot, I enabled tips on the hover of individual plotted dots to expose the
+        full detail information of the school, such as the school name, and exact amounts for median income, average net costs, mean
+            debt, and % of federal loan for each scene.</p>
+
         <h3><u>Conclusion</u></h3>
-        As a summarized conclusion to this essay, a large portion of the public university tend to present high value in terms
+        <p>As a summarized conclusion to this essay, a large portion of the public university tend to present high value in terms
         of lower debt, average net costs, and federal against higher median incomes.  In regards to observations, Stanford University
         represented the best value in terms of the lowest costs considerations against median earned incomes for graduates from there.
         This is in part due to the reputation of Stanford and it's ability to attract highly qualified academic candidates.
         The lower costs is likely due to it's availability and opportunity for students to qualify for a broad spectrum of
-        scholarships and grants.
+            scholarships and grants.</p>
     </div>
 </div>
