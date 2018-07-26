@@ -116,7 +116,22 @@
         display: table;
         clear: both;
     }
+    .annotation circle {
+        fill: none;
+        stroke: darkslategrey;
+    }
 
+    .annotation path {
+        fill: none;
+        stroke: darkslategrey;
+        shape-rendering: crispEdges;
+    }
+
+    .annotation text {
+        text-shadow: -2px 0 2px #fff,
+        0 2px 2px #fff,
+        2px 0 2px #fff,
+        0 -2px 2px #fff;
 </style>
 <body>
 <div align="center">
@@ -153,6 +168,20 @@
 
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script>
+
+    var annotations = [
+        {
+            "cx": 100,
+            "cy": 450,
+            "r": 120,
+            "text": "Negative correlation for % fed loan usage and income levels",
+            "textWidth": 140,
+            "textOffset": [
+                121,
+                186
+            ]
+        }
+    ];
 
     var margin = {top: 20, right: 100, bottom: 50, left: 100},
         width = 800 - margin.left - margin.right,
@@ -204,7 +233,23 @@
 
         drawPlot(dataset);
         drawSlider(dataset);
+        drawAnnotation(annotations)
     });
+    function drawAnnotation(data)
+    {
+        var text = svg.data(data).append("text")
+            .attr("dx", function(d) { return 100; })
+            .attr("dy", function(d) { return 250; })
+            .text(function(d) { return d.text});
+
+        svg.append("line")          // attach a line
+            .style("stroke", "black")  // colour the line
+            .attr("x1", 0)     // x position of the first end of the line
+            .attr("y1", 200)      // y position of the first end of the line
+            .attr("x2", 640)     // x position of the second end of the line
+            .attr("y2", 720);
+    }
+
 
     function drawPlot(data){
         svg.selectAll("*").remove();

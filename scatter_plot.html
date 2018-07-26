@@ -117,6 +117,22 @@
         border-radius: 50%;
     }
 
+    .annotation circle {
+        fill: none;
+        stroke: darkslategrey;
+    }
+
+    .annotation path {
+        fill: none;
+        stroke: darkslategrey;
+        shape-rendering: crispEdges;
+    }
+
+    .annotation text {
+        text-shadow: -2px 0 2px #fff,
+        0 2px 2px #fff,
+        2px 0 2px #fff,
+        0 -2px 2px #fff;
 </style>
 <body>
 <div class="row">
@@ -156,6 +172,20 @@
 
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script>
+    var annotations = [
+        {
+            "cx": 100,
+            "cy": 450,
+            "r": 120,
+            "text": "Public schools cluster at around same income & net costs.",
+            "textWidth": 140,
+            "textOffset": [
+                121,
+                186
+            ]
+        }
+    ];
+
 
     var margin = {top: 20, right: 100, bottom: 50, left: 100},
         width = 800 - margin.left - margin.right,
@@ -207,6 +237,7 @@
 
         drawPlot(dataset);
         drawSlider(dataset);
+        drawAnnotation(annotations);
     });
 
     function drawPlot(data){
@@ -309,6 +340,35 @@
 
         drawPlot(newData);
     }
+    function drawAnnotation(data)
+    {
+        var gRingNote = svg.selectAll(".ring-note")
+            .data(data).enter().append("g")
+            .attr("class","ring-note")
+            .attr("transform", function (d) {
+                return "translate(" + d.cx + "," + d.cy + ")";
+            })
+
+        var gAnnotation = gRingNote.append("g")
+            .attr("class","annotation");
+
+        var circle = gAnnotation.append("circle")
+            .attr("r", function(d) { return d.r; });
+
+        gAnnotation.append("line")          // attach a line
+            .style("stroke", "black")  // colour the line
+            .attr("x1", 80)     // x position of the first end of the line
+            .attr("y1", 100)      // y position of the first end of the line
+            .attr("x2", 200)     // x position of the second end of the line
+            .attr("y2", 180);
+
+        var text = gAnnotation.append("text")
+            .attr("dx", function(d) { return 200; })
+            .attr("dy", function(d) { return 200; })
+            .text(function(d) { return d.text});
+
+    }
+
     function drawSlider(data)
     {
         var svgSlider = d3.select("#slider")
@@ -331,7 +391,8 @@
         var label = slider.append("text")
             .attr("class", "label")
             .attr("text-anchor", "middle")
-            .attr("transform", "translate(0," + (-25) + ")")
+            .attr("transform", "translate(0," + (-25) + ")");
+
 
         slider.append("line")
             .attr("class", "track")
