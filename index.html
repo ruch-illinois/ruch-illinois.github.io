@@ -4,8 +4,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
 
@@ -67,7 +65,20 @@
     .round {
         border-radius: 50%;
     }
+    /* Create two equal columns that floats next to each other */
+    .column {
+        float: left;
+        width: 50%;
+        padding: 10px;
+        height: 800px; /* Should be removed. Only for demonstration */
+    }
 
+    /* Clear floats after the columns */
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
     #example1 {
         border: 2px solid black;
         padding: 25px;
@@ -78,7 +89,7 @@
 
 </style>
 
-<body id="example1">
+<body>
 
 
 <div class="container">
@@ -86,17 +97,18 @@
     <h3>A closer look into the student journey into the California University financial landscape</h3>
 </div>
 <div class="row">
-    <div class="column"></div>
+    <div class="column" id="example1"></div>
     <div class="column">
-            <h3><u>Median Income After College</u></h3>
-            <p>This takes a look at the median income of students earned post-college in the California University System.  As seen by the many
-            private and public colleges, there is a wide range of colleges, yet as seen in the visual; a higher education can yield a broad
-            range of potential incomes.
-
-
-            <h3><u>Note about Visualization</u></h3>
-            <p>This visualization is a static visualization, and is intended to pique the viewers interest behind the student's financial journey to higher education.
-            The labels are left off, to allow the user to drop any pre-concieved notions about the cost of colleges, and push the user to explore
-            the data in more detail, in subsequent scenes</p>
+            <h3><u>Introduction</u></h3>
+            <p>With escalating costs of attending college, students must navigate the financial waters of attending college,
+            to select the college that best suits their aspirations in addition to what presents the most economic solution
+            for their financial background.  This visualisation takes a look at the common financial considerations a student
+            faces when selecting a college, to help identify the trends and insights behind the public and private universities in
+                California.
+        <div class="row">
+            <div align="center">
+                <a href="scatter_plot.html" class="next">Next Scene&raquo;</a>
+            </div>
+        </div>
     </div>
 </div>

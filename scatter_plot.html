@@ -5,8 +5,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
 <nav class="navbar navbar-inverse">
@@ -133,6 +131,19 @@
         0 2px 2px #fff,
         2px 0 2px #fff,
         0 -2px 2px #fff;
+
+    div.tooltip {
+        position: absolute;
+        text-align: center;
+        width: 60px;
+        height: 28px;
+        padding: 2px;
+        font: 12px sans-serif;
+        background: lightsteelblue;
+        border: 0px;
+        border-radius: 8px;
+        pointer-events: none;
+    }
 </style>
 <body>
 <div class="row">
@@ -200,7 +211,7 @@
         .style("border-radius", "6px")
         .style("text-align", "center")
         .style("font-family", "monospace")
-        .style("width", "800px")
+        .style("width", "200px")
         .text("");
 
     var x = d3.scaleLinear()
@@ -270,7 +281,7 @@
             .attr("cx", function(d) { return x(d.AVG_NET_PRICE); })
             .attr("cy", function(d) { return y(d.MD_EARN_WNE_P10); })
             .on("mouseover", function(d) {
-                tooltip.html(d.INSTNM + "<br><p>Median Income: " + d.MD_EARN_WNE_P10 + "<br>Average Net Spend: " + d.AVG_NET_PRICE);
+                tooltip.html(d.INSTNM + "<br><br><p>Median Income: $" + d.MD_EARN_WNE_P10 + "<br>Average Net Spend: $" + d.AVG_NET_PRICE);
                 return tooltip.style("visibility", "visible");
             })
             .on("mousemove", function() {
