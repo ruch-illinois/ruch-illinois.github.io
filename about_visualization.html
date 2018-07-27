@@ -104,17 +104,19 @@
         students after graduating college.</p>
 
         <p>Each slide in the presentation represents a different financial aspect of the cost of college, as it relates
-            to the earned income of graduating students; to allow the user to focus on that particular aspect of cost of college.
+            to the earned income of graduating students; to allow the user to focus on that particular financial aspect of cost of college.
             I've chosen to allow the user to have the freedom to "bounce" between scenes, as to allow the user to easily compare schools
-            for different factors.  No cost aspect is more weighted then the other, as the objective is to allow the user to evaluate schools
-            and draw their own conclusions.
+            for different factors, be enabling links at the top of the page to navigate freely across different visualizations.
+            In order for the user to keep track of the page that they were on, I used active indicator, by highlight the active page in white.
+            No cost aspect is more weighted then the other, thus I allowed the user to freely navigate, instead of following a purely linear narrative.
+            The objective of is to allow user to evaluate schools and draw their own conclusions.
         </p>
 
         <p>
-            The scatter plot visualization was the best visualization suited for this message, as it clearly showed the relationships
-            between median earned income and the other cost factors when attending different universities.  It allowed the users to easily identify
+            The scatter plot visualization was the best visualization suited for this message, as it clearly shows the relationships
+            between median earned income and the other cost factors when attending different universities.  It allows the users to easily identify
             the colleges that have high earning potential, and would incur the smallest amount of potential costs, by showing where colleges
-            clustered in the visualization.
+            clustered in the visualization in regards to these factors.
 
             I enabled tooltips to allow users the ability to get more detailed information about the individual school, and inform the user
             about this school.  The major intent of this visualization was geared specifically to prospective students who
@@ -124,36 +126,44 @@
     <div class="column">
         <h3><u>Scene: Average Net Costs</u></h3>
         <p>The focus of this scene was to take the Average Net Costs, and compare this information against the median earned
-        income of studens post-college.  The Average Net Costs represents the calculated data based on calculations by the each
-        University cost calculator, which took into consideration annual college costs such as tuition, room & board, books,
+        income of students post-college.  The average net costs represents the calculated data based on calculations by the each
+        university cost calculator, which took into consideration annual college costs such as tuition, room & board, books,
         transportation, food, and subtracted any potential scholarships and grants to arrived at the annual net costs of
-        attendance.
+        attendance.  Immediately, I wanted to draw the users attention to the cluster of public schools with an annotation.  Specifically to show that the range average net costs
+        were relatively small, and that by comparison, the cluster of public schools compared similar to a good majority of private schools in regards
+        to median income.  The annotation clears, as the users filters and rescales the visualization using the median income slider.
+
+        <h3><u>Scene: Federal Loan</u></h3>
+        <p>This scene was meant to paint a picture of a students that leveraged a federal loan to finance their college education.
+            Though the percentage of students using a federal loan doesn't quite convey the gravity of financial burden, it does imply
+            the indication of financial assistance needed to fund an education at the school.  Hence, in considering this along with
+            the median earned income, it shows the likelihood of paying off a federal loan.  I used a line in addition to brief annnoations
+        for the user to see the negative relationship between % of federal loans versus median earned income.  This was the most striking
+        insight from looking at this data, showing that schools with students using higher percentages of federal loans, tended to not have a lower
+        median incomes amongst reporting students.</p>
 
         <h3><u>Scene: College Debt</u></h3>
         <p>This scene was meant to capture the mean debt that students accumulated post graduation.  In concert with the other
-        scenes, it allows the user to answer the question, of which college by numbers represents the best value for long
-        term earning potential.</p>
+        scenes, it allows the user to answer the question of which college by the numbers represents the best value for long
+        term earning potential.  In this scene specifically, private and public schools didn't seem to have as big of spread and distribution
+        in regards to mean debt after college, which varied with the other financial facts such as average net costs and federal loan.  Again,
+        I used a circular annotation to point out this observation in the visualization.</p>
 
-        <h3><u>Scene: Federal Loan</u></h3>
-        <p>This scene was meant to paint a picture of student that leveraged a federal loan to finance their college education.
-        Though the percentage of students using a federal loan doesn't quite convey the gravity of financial burden, it does imply
-        the indication of financial assistance needed to fund an education at the school.  Hence, in considering this along with
-        the median earned income, it shows the likelihood of paying off a federal loan.</p>
 
         <h3><u>Parameters, Triggers, and Events</u></h3>
         <p>The parameter used across all scenes is the median income across the California University System. I leveraged a sliding bar
         to filter based on median income.  This sliding bar acted as a filter to trigger an update on the visualization to show
-        the filtered view.  For each time the sliding bar filter is adjusted, it will update the visualization.  To enable users,
-        to get a more detailed view of the scatter plot, I enabled tips on the hover of individual plotted dots to expose the
+        the filtered view based on the median income level selection.  Upon the event of sliding the bar, visualization would filter and rescale on the canvas,
+            based on relevant school plots. To enable users, to get a more detailed view of the scatter plot, I enabled tips on the hover of individual plotted dots to expose the
         full detail information of the school, such as the school name, and exact amounts for median income, average net costs, mean
             debt, and % of federal loan for each scene.</p>
 
         <h3><u>Conclusion</u></h3>
         <p>As a summarized conclusion to this essay, a large portion of the public university tend to present high value in terms
         of lower debt, average net costs, and federal against higher median incomes.  In regards to observations, Stanford University
-        represented the best value in terms of the lowest costs considerations against median earned incomes for graduates from there.
+        represented the best value in terms of the lowest costs considerations against median earned incomes for graduates from that school.
         This is in part due to the reputation of Stanford and it's ability to attract highly qualified academic candidates.
-        The lower costs is likely due to it's availability and opportunity for students to qualify for a broad spectrum of
+        The lower costs are likely due to it's availability and opportunity for students to qualify for a broad spectrum of
             scholarships and grants.</p>
     </div>
 </div>
